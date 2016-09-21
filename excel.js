@@ -8,12 +8,14 @@ bodyArrays = [
 ]
 
 function getNextColumnName(name) {
+    // 引数で与えた次の列の値を返す("A"ならば"B", "AZ"ならば"BA")
     let base26Val = getBase26Val(name);
     return getColumnName(base26Val + 1);
 }
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 function getBase26Val(name) {
+    // 26進数表現を使用してアルファベットから数字へ変換する
     let alphabetArray = Array.from(name);
     let base26Val = 0;
     for (let i = 0; i < alphabetArray.length; i++) {
@@ -25,6 +27,7 @@ function getBase26Val(name) {
 }
 
 function getColumnName(base26) {
+    // 26進数表現を使用して数字からアルファベットへ変換する
     if (base26 == 0) {
         console.error('0 ?!');
         return;
@@ -47,6 +50,10 @@ function getColumnName(base26) {
 }
 
 function sumHandler(e) {
+    /*
+     * 足し算のイベント。実際の足し算はcheckSumFunctionの中で行い、
+     * ここでは足し算するかどうかと、値を配列にセットしている
+     */
     let value = e.srcElement.value;
     let sum = checkSumFunction(value);
     if (sum) {
@@ -58,6 +65,8 @@ function sumHandler(e) {
 }
 
 function getIndex(node) {
+    // DOMのノードが何番目にあるかを求める
+    // たとえば、<a><p></p><p id="x"></p></a>なら、getIndex(document.getElementById("x")) は 2
     let nodeIndex = 0;
     while ((node = node.previousSibling) != null) {
         if (node.nodeName == "#text") {
@@ -69,6 +78,7 @@ function getIndex(node) {
 }
 
 function getPositionFromCell(cell) {
+    // 現在のtextareaが、どこの位置にあるかを求める
     let td = cell.parentElement;
     let tr = td.parentElement;
 
@@ -79,6 +89,9 @@ function getPositionFromCell(cell) {
 }
 
 function checkSumFunction(value) {
+    // セル(textarea)に入れた値を入れて、数字型に変換し、足し算をしている
+
+    // 正規表現。英数字を抜き出している。
     let matched = value.match(/^=SUM\(([A-Z]+\d+) *, *([A-Z]+\d+)\)$/);
     if (matched) {
         let left = matched[1];
@@ -94,6 +107,7 @@ function checkSumFunction(value) {
 }
 
 function getPosition(name) {
+    // 英数字("A1")から、セルの位置[0, 0]を得る
     let parsed = name.match(/([a-zA-Z]+)(\d+)/);
     let columnName = parsed[1].toUpperCase();
     let rowName = parsed[2];
@@ -104,6 +118,7 @@ function getPosition(name) {
 }
 
 function getValue(position) {
+    // セルの位置の値を取得
     let type = typeof position;
     if (type == 'string') {
         position = getPosition(position);
@@ -118,6 +133,7 @@ function getValue(position) {
 }
 
 function setValue(position, value) {
+    // セルの位置に値をセットする
     let type = typeof position;
     if (type == 'string') {
         position = getPosition(position);
@@ -132,6 +148,8 @@ function setValue(position, value) {
 }
 
 function addColumn() {
+    // 列を追加
+
     // header
     let indices = columnHeadersEl.children;
     let lastColumnHeaderEl = indices[indices.length - 1];
@@ -149,6 +167,8 @@ function addColumn() {
 }
 
 function addRow() {
+    // 行を追加
+
     let rowMax = bodyArrays[0].length;
     let newRowIndex = bodyArrays.length + 1;
 
@@ -166,7 +186,7 @@ function addRow() {
 
 }
 
-function createDefaultTd() {
+function createCell() {
     let td = document.createElement('td');
     let textarea = document.createElement('textarea');
     textarea.setAttribute('rows', '1');
@@ -183,7 +203,7 @@ function renderBody(rowType, columnType, obj) {
                 continue
             }
             let tr = children[i];
-            let td = createDefaultTd();
+            let td = createCell();
             tr.appendChild(td);
         }
     } else if (rowType == 'ONLY_LAST_ROW' && columnType == 'ALL_COLUMN') {
@@ -197,7 +217,7 @@ function renderBody(rowType, columnType, obj) {
         let tr = document.createElement('tr');
         tr.append(clone);
         for (let i = 0; i < obj.bodyCount; i++) {
-            let td = createDefaultTd();
+            let td = createCell();
             tr.append(td);
         }
         tableEl.appendChild(tr);
