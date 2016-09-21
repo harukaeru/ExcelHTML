@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <link href="excel.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <button onclick="addColumn();">列を追加する</button>
+        <button onclick="addRow();">行を追加する</button>
+        <table>
+            <tbody id="excel">
+                <tr id="column-headers">
+                    <td class="column-index row-index"></td>
+                    <td class="column-index">A</td>
+                    <td class="column-index">B</td>
+                </tr>
+                <tr>
+                    <td class="row-index">1</td>
+                    <td><textarea rows=1 class="default-textarea"></textarea></td>
+                    <td><textarea rows=1 class="default-textarea"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="row-index">2</td>
+                    <td><textarea rows=1 class="default-textarea"></textarea></td>
+                    <td><textarea rows=1 class="default-textarea"></textarea></td>
+            </tbody>
+        </table>
+    </body>
+    <script src="excel.js"></script>
+</html>
