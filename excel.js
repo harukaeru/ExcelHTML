@@ -92,7 +92,7 @@ function checkSumFunction(value) {
     // セル(textarea)に入れた値を入れて、数字型に変換し、足し算をしている
 
     // 正規表現。英数字を抜き出している。
-    let matched = value.match(/^=SUM\(([A-Z]+\d+) *, *([A-Z]+\d+)\)$/);
+    let matched = value.match(/^=([A-Z]+\d+) *\+ *([A-Z]+\d+)$/);
     if (matched) {
         let left = matched[1];
         let right = matched[2];
